@@ -46,3 +46,9 @@
     background-size: cover;
     background-position: $position;
 }
+
+@mixin centerVertHoriz() {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

@@ -1,30 +1,36 @@
-/* Welcome to Compass.
- * In this file you should write your main styles. (or centralize your imports)
- * Import this file using the following HTML or equivalent:
- * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
-
-@mixin minDesktop {
+@mixin minDesktop_1080() {
 	@media (max-width: 1080px) {
 		@content
 	}
 };
-@mixin pad {
+@mixin pad_768() {
 	@media (max-width: 768px) {
 		@content
 	}
 };
-@mixin bigPhone {
+@mixin bigPhone_767() {
 	@media (max-width: 767px) {
 		@content
 	}
 };
-@mixin midPhone {
+@mixin midPhone_667() {
+	@media (max-width: 667px) {
+		@content
+	}
+};
+@mixin midPhone_568() {
 	@media (max-width: 568px) {
 		@content
 	}
 };
-@mixin minPhone {
-	@media (max-width: 414px) {
+@mixin minPhone_414() {
+	@media (max-width: 415px) {
+		@content
+	}
+};
+
+@mixin customizeSize($width) {
+	@media (max-width: $width) {
 		@content
 	}
 };

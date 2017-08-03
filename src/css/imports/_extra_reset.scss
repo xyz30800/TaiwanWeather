@@ -10,4 +10,18 @@ img {
 }
 a {
 	text-decoration: none;
+	color: black;
+	
+	&:hover {
+		color: black;
+	}
+}
+
+input, select, textarea, button, option {
+	border: 0;
+    outline: none;
+    &:focus {
+    	border: 0;
+    	outline: none;
+    }
 }

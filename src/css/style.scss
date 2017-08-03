@@ -6,20 +6,687 @@
 
 @include global-reset();
 
-/* 範例 */
-.content {
-	background-image: url(../img/note.jpg);
-	height: 300px;
-	background-repeat: no-repeat;
-	background-size: cover;
-	background-position: center;
-    h1 {
-    	font-size: 40px;
-    	color: red;
-    	font-weight: bold;
-        @include opacity(.5);
-    }
+body {
+    font-family: "Lantinghei TC", "Hiragino Kaku Gothic Pro", "Heiti TC", 微軟正黑體, "STHeiti Light", "Microsoft Yahei", "Microsoft JhengHei", Helvetica, sans-serif;
 }
-/* 範例 */
 
-/* Your scss code - Start */
+$color_1: #303841;
+$color_2: #00ADB5;
+$color_3: #EEEEEE;
+$color_4: #FF5722;
+
+.content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: 100vh;
+    padding: 16px 0;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    @include bgImgCover('../img/main_bg.jpg', center);
+
+    &:after {
+        position: absolute;
+        content: '';
+        width: 100%;
+        height: 100%;
+        display: block;
+        top: 0;
+        left: 0;
+        opacity: .8;
+        background-color: rgba($color_1, .8);
+        z-index: 5;
+    }
+
+    .container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .public-container {
+        width: 100%;
+        z-index: 20;
+        &-header {
+            width: 100%;
+            margin: 28px 0 12px 0;
+            text-align: center;
+            a {
+                font-size: 40px;
+                color: $color_4;
+                @include midPhone_667() {
+                     font-size: 36px;
+                }
+                @include minPhone_414() {
+                    font-size: 28px;
+
+                }
+            }
+        }
+        &-search {
+            position: relative;
+            margin-bottom: 16px;
+            @include border-radius(4px);
+            box-shadow:0 3px 8px rgba($color_1, 0.6);
+            padding: 10px 16px;
+            @include midPhone_568() {
+                padding: 8px;
+            }
+            @include minPhone_414() {
+                width: 90%;
+            }
+            > form {
+                @include centerVertHoriz();
+                width: 100%;
+            }
+            > form > * {
+                @include border-radius(4px);
+                padding: 8px;
+            }
+            label {
+                color: $color_3;
+                font-size: 16px;
+                @include midPhone_568() {
+                    display: none;
+                }
+            }
+            input {
+                width: 240px;
+                color: $color_3;
+                background-color: rgba($color_3, .3);
+                margin: 0 16px;
+                @include minPhone_414() {
+                    width: calc(100% - 80px);
+                }
+                &:focus {
+                    background-color: rgba($color_3, .2);
+                }
+                
+            }
+            button {
+                float: right;
+                width: 100px;
+                font-size: 1em;
+                color: $color_3;
+                letter-spacing: 1px;
+                background-color: rgba($color_4, .7);
+                cursor: pointer;
+                @include transition(opacity, .3s);
+                @include midPhone_568() {
+                    width: 80px;
+                    font-size: .9em;
+                }
+                @include minPhone_414() {
+                    width: 60px;
+                    font-size: .8em;
+                }
+                &:hover {
+                    opacity: .9;
+                }
+            }
+            .search-autocomplete {
+                display: none;
+                position: absolute;
+                max-height: 180px;
+                overflow-y: overlay;
+                top: 48px;
+                left: 132px;
+                width: 240px;
+                background-color: rgba($color_3, .9);
+                @include border-radius(2px);
+                box-shadow:0 3px 8px rgba($color_1, 0.6);
+                z-index: 30;
+                @include midPhone_568() {
+                    top: 44px;
+                    left: 24px;
+                }
+                @include minPhone_414() {
+                    width: calc(100% - 110px);
+                }
+                ul {
+                    li {
+                        @include border-radius(2px);
+                        cursor: default;
+                        padding: 10px;
+
+                        .town {
+                            color: rgba($color_1, .9);
+                        }
+
+                        .city {
+                            color: rgba($color_1, .7);
+                            font-size: .9em;
+                            font-style: italic;
+                        }
+
+                        &:hover {
+                            background-color: rgba($color_3, 1);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .router-container {
+        width: 950px;
+        z-index: 10;
+        @include minDesktop_1080() {
+            width: 95%;
+        }
+        @include midPhone_568() {
+            width: 90%;
+        }
+        > * {
+            margin-bottom: 12px;
+            @include border-radius(4px);
+            box-shadow:0 3px 8px rgba($color_1, 0.6);
+        }
+    }
+    
+    /* router-container 內的元件 CSS - Start*/
+    .index-container {
+        &-cityInfo,
+        &-localInfo {
+            width: 100%;
+            padding: 12px;
+            @include minPhone_414() {
+                padding: 4px;
+            }
+        }
+        &-localInfo {
+            @include centerVertHoriz();
+            flex-direction: row;
+
+            > * {
+                display: inline-block;
+                margin: 0 10px;
+            }
+            
+            .google-map {
+                width: 280px;
+                height: 280px;
+                box-shadow: 8px 8px 16px rgba($color_1, 0.8);
+
+                @include midPhone_667() {
+                    display: none;
+                }
+                .invalid-map {
+                    width: 100%;
+                    height: inherit;
+                    color: rgba($color_3, .7);
+                    font-size: 18px;
+                    font-style: italic;
+                    background-color: rgba(0,0,0,.1);
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+            }
+            &-detail {
+                position: relative;
+                cursor: pointer;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                padding: 0 4px;
+                width: calc(100% - 35% - 40px);
+                height: 100%;
+                @include midPhone_667() {
+                    width: 100%;
+                }
+                .main {
+                    width: 50%;
+                    font-weight: bold;
+                    font-size: 1.2em;
+                    color: rgba($color_3, .8);
+                    border-bottom: 2px solid rgba($color_3, .5);
+                    @include midPhone_568() {
+                        width: 160px;
+                        font-size: 1em; 
+                    }
+
+                    h2 {
+                        font-size: 1.1em;
+                        margin-bottom: 8px;
+                    }
+                }
+                &-each {
+                    margin-bottom: 12px;
+                    padding: 8px 12px;
+                    border-bottom: 1px solid rgba($color_3, .5);
+                    color: rgba($color_3, .7);
+                    @include midPhone_568() {
+                        font-size: 1em;
+                    }
+                    &-title {
+                        display: inline-block;
+                        width: 40%;
+                    }
+                    .air-condition {
+                        position: relative;
+                        color: red;
+                        &:after {
+                            content: '危險';
+                            position: absolute;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            text-align: center;
+                            color: $color_3;
+                            top: 0;
+                            left: 70px;
+                            width: 60px;
+                            height: 110%;
+                            @include border-radius(4px);
+                            box-shadow:0 3px 8px rgba($color_1, 0.6);
+                            background-color: rgba(red, .5);
+                            @include midPhone_568() {
+                                left: 180%;
+                                font-size: 14px;
+                            }
+                        }
+                    }
+                }              
+                &-uptime {
+                    text-align: right;
+                    font-size: 12px;
+                    color: rgba($color_3, .5);
+                    margin-right: -12px;
+                }
+                &-img {
+                    position: absolute;
+                    top: -8px;
+                    right: -0px;
+                    display: inline-block;
+                    width: 130px;
+                    @include midPhone_568() {
+                        width: 100px;
+                    }
+                    @include minPhone_414() {
+                        width: 80px;
+                    }
+                    img {
+                        width: inherit;
+                    }
+                    &:after {
+                        content: "";
+                        display: block;
+                        position: absolute;
+                        width: 64%;
+                        height: 12%;
+                        left: 18%;
+                        border-radius: 50%;
+                        z-index: -1;
+                        bottom: 0;
+                        box-shadow: 0px 18px 10px 2px rgba(0,0,0,0.4);
+                    }
+                }
+            }
+        }
+        &-cityInfo {
+            @include centerVertHoriz();
+            @include clearfix();
+            &-detail {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                margin: 0 15px;
+                padding: 8px;
+                cursor: pointer;
+                width: 50%;
+                height: auto;
+                transform: scale(1);
+                @include transition(transform, .3s);
+
+                &:hover {
+                    transform: scale(1.01);
+                    box-shadow:0 2px 2px rgba($color_1, 0.6);
+                }
+                @include midPhone_568() {
+                    margin: 0 10px;
+                    padding: 0 4px;
+                    width: 100%;
+                    &:nth-child(2) {
+                        display: none;
+                    }
+                    &:hover {
+                        transform: scale(1);
+                    }
+                }
+                h2 {
+                    width: 60%;
+                    margin-left: 4px;
+                    margin-bottom: 12px;
+                    padding: 8px;
+                    font-size: 1.3em;
+                    font-weight: bold;
+                    color: rgba($color_3, .9);
+                    border-bottom: 2px solid rgba($color_3, .5);
+                    @include midPhone_568() {
+                        margin: 0 0 12px 0;
+                         font-size: 1em;
+                    }
+                }
+                &-each {
+                    margin-bottom: 8px;
+                    padding: 8px 12px;
+                    border-bottom: 1px solid rgba($color_3, .5);
+                    @include midPhone_568() {
+                        margin: 0 0 12px 0;
+                    }
+                    > span {
+                        color: rgba($color_3, .8);
+                    }
+                    &-title {
+                        display: inline-block;
+                        width: 40%;
+                    }
+                    .air-condition {
+                        position: relative;
+                        color: red;
+                        &:after {
+                            content: '危險';
+                            position: absolute;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            text-align: center;
+                            color: $color_3;
+                            top: 0;
+                            left: 60px;
+                            width: 60px;
+                            height: 110%;
+                            @include border-radius(4px);
+                            box-shadow:0 3px 8px rgba($color_1, 0.6);
+                            background-color: rgba(red, .5);
+                            @include midPhone_667() {
+                                left: 50px;
+                            }
+                            @include midPhone_568() {
+                                left: 180%;
+                                font-size: 14px;
+                            }
+                        }
+                    }
+                }
+                &-uptime {
+                    text-align: right;
+                    font-size: 12px;
+                    color: rgba($color_3, .5);
+                    margin-right: -2px;
+                    @include midPhone_568() {
+                        margin-right: -12px;
+                    }
+                }
+                &-img {
+                    position: absolute;
+                    top: -10px;
+                    right: 0px;
+                    display: inline-block;
+                    width: 100px;
+                    @include minPhone_414() {
+                        width: 80px;
+                    }
+                    img {
+                        width: inherit;
+                    }
+                    &:after {
+                        content: "";
+                        display: block;
+                        position: absolute;
+                        width: 64%;
+                        height: 12%;
+                        left: 18%;
+                        border-radius: 50%;
+                        z-index: -1;
+                        bottom: 0;
+                        box-shadow: 0px 18px 10px 2px rgba(0,0,0,0.4);
+                    }
+                }
+            }
+        }
+    }
+    .search-container {
+        
+        &-cityInfo,
+        &-cityBar {
+            width: 100%;
+        }
+        &-cityInfo {
+            flex-direction: column;
+            padding: 8px 20px;
+
+            @include minPhone_414() {
+                padding: 4px;
+            }
+            &-header {
+                padding: 8px;
+                margin-bottom: 12px;
+                text-align: center;
+                h2 {
+                    font-size: 30px;
+                    color: rgba($color_4, 0.9);
+                }
+                     
+            }
+            &-content {
+                @include centerVertHoriz();
+                position: relative;
+                width: 100%;
+                flex-direction: row;
+                padding: 4px 12px;
+                @include bigPhone_767() {
+                    flex-direction: column;
+                }
+                @include midPhone_568() {
+                    flex-direction: column-reverse;
+                }
+
+                &-map {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    width: 35%;
+                    min-height: 100%;
+                    height: 35%;
+                    box-shadow: 8px 8px 16px rgba($color_1, 0.8);
+
+                    @include bigPhone_767() {
+                        margin-left: -150px;
+                        width: 45%;
+                        margin-bottom: 24px;
+                    }
+                    @include midPhone_568() {
+                        width: 100%;
+                        margin-left: 0;
+                        margin-bottom: 24px;
+                    }
+                }
+                &-weatherInfo {
+                    width: 65%;
+                    padding: 0 20px;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    color: rgba($color_3, .7);
+                    @include bigPhone_767() {
+                        width: 100%;
+                    }
+                    @include midPhone_568() {
+                        margin-bottom: 30px;
+                        padding: 0 12px;
+                    }
+                    @include minPhone_414() {
+                        padding: 0;
+                    }
+
+                    &-each {
+                        margin-bottom: 12px;
+                        padding: 8px 12px;
+                        border-bottom: 1px solid rgba($color_3, .5);
+                        @include midPhone_568() {
+                            font-size: 1em;
+                        }
+                        > span:nth-child(1) {
+                            display: inline-block;
+                            width: 36%;
+                            @include midPhone_568() {
+                                width: 40%;
+                            }
+                        }
+                    }
+                    p{
+                        text-align: right;
+                        font-size: 12px;
+                        color: rgba($color_3, .5);
+                        margin-right: -12px;
+                        @include minPhone_414() {
+                            margin-right: 0;
+                        }
+                    }
+                }
+                &-condtion {
+                    @include centerVertHoriz();
+                    position: absolute;
+                    top: -48px;
+                    right: 36px;
+                    flex-direction: column;
+                    color: rgba($color_4, .7);
+                    width: 130px;
+                    @include bigPhone_767() {
+                        top: 0;
+                        right: 48px;
+                    }
+                    @include midPhone_568() {
+                        right: 24px;
+                    }
+                    @include minPhone_414() {
+                        width: 100px;
+                        right: 4px;
+                    }
+                    img {
+                        width: inherit;
+                        margin-bottom: 16px;
+                    }
+                    span {
+                        @include border-radius(5px);
+                        background-color: rgba($color_4, .5);
+                        color: rgba($color_3, .9);
+                        font-size: 30px;
+                        padding: 12px;
+                        border: 1.6px solid rgba($color_4, .7);
+                        display: block;
+                        box-shadow:0 3px 8px rgba($color_1, 0.6);
+                        margin-bottom: 12px;
+                        @include midPhone_568() {
+                            font-size: 20px;
+                            padding: 8px;
+                        }
+                    }
+                }
+            }
+            &-special {
+                text-align: center;
+                color: rgba($color_3, .7);
+                width: 100%;
+                padding: 15px;
+                margin: 15px 0;
+                border: 2px solid rgba(red, .6);
+                box-shadow:0 3px 8px rgba($color_1, 0.6);
+                background-color: rgba($color_1, .3);
+                @include border-radius(5px);
+
+                h3 {
+                    font-size: 1.2em;
+                    color: rgba($color_3, .8);
+                    margin-bottom: 8px;
+                }
+                span {
+                    text-indent : 28px;
+                    font-size: .9em;
+                    display: block;
+                    line-height: 20px;
+                    letter-spacing: 2px;
+                    margin: 16px 0;
+                }
+                p {
+                    text-align: right;
+                    font-size: 12px;
+                    color: rgba($color_3, .5);                    
+                }
+            }
+        }
+        &-cityBar {
+            flex-direction: column;
+            padding: 8px 20px;
+
+            @include minPhone_414() {
+                padding: 4px;
+            }
+
+            &-header {
+                padding: 8px;
+                margin-bottom: 12px;
+                text-align: center;
+                h2 {
+                    font-size: 24px;
+                    color: rgba($color_4, 0.9);
+                }  
+            }
+            &-lineChart {
+                width: 100%;
+                height: 360px;
+                @include bigPhone_767() {
+                    height: 330px;
+                }
+                @include midPhone_568() {
+                    height: 260px;
+                }
+                @include customizeSize(320px) {
+                    height: 210px;
+                }
+
+                .customizeTooltip {
+                    @include border-radius(8px);
+                    display: flex;
+                    justify-content: flex-start;
+                    flex-direction: column;
+                    padding: 4px 8px;
+                    color: rgba($color_1, 1);
+                    box-shadow:3px 3px 8px rgba($color_1, 0.6);
+                    background-color: rgba($color_3, 0.8);
+                    border: 2px solid rgba($color_1, 0.8);
+
+                    h2 {
+                        width: 80%;
+                        font-size: 1.2em;
+                        margin: 3px 2px;
+                        padding-bottom: 6px;
+                        border-bottom: 1px solid rgba($color_1, 0.5);
+                    }
+                    span {
+                        font-weight: bold;
+                        margin: 4px 0;
+                    }
+
+                    @include midPhone_568() {
+                        padding: 4px;
+                        h2 {
+                            font-size: 1em;
+                            margin-bottom: 2px;
+                        }
+                        span {
+                            font-size: .8em;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    /* router-container 內的元件 CSS - End*/
+}

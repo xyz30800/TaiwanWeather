@@ -1,4 +1,5 @@
 import React, {Component}  from 'react';
+import { Link } from 'react-router-dom';
 
 import waringIng from '../../img/waring.png';
 
@@ -16,11 +17,11 @@ const LocationInfo = ({ localInfo }) => {
 	if (localDataLen === 0) { 
 		dataEmpty = true;
 		imgAttr = {'src': waringIng}
+		weatherDetailLink = {'to': '/'};
 		lng_lat = {
 			'lng': NaN,
 			'lat': NaN
 		}
-		
 		if (showInvalids.length !== 0) {
 			showInvalids.map(el => {
 				el.style['color'] = '#FF5722';
@@ -32,7 +33,7 @@ const LocationInfo = ({ localInfo }) => {
 		console.log()
 		dataEmpty = false;
 		imgAttr = {'src': `https://works.ioa.tw/weather/img/weathers/zeusdesign/${localInfo.weather.img}`};
-		weatherDetailLink = {'href': `/result?town=${localInfo.town.name}&city=${localInfo.town.cate.name}`};
+		weatherDetailLink = {'to': `/result?town=${localInfo.town.name}&city=${localInfo.town.cate.name}`};
 		lng_lat = {
 			'lng': parseFloat(localInfo.town.position.lng),
 			'lat': parseFloat(localInfo.town.position.lat)
@@ -51,7 +52,7 @@ const LocationInfo = ({ localInfo }) => {
 			<div className="google-map">
 				<LocationMap lng={lng_lat.lng} lat={lng_lat.lat} />
 			</div>
-			<a className="index-container-localInfo-detail" {...weatherDetailLink} >
+			<Link className="index-container-localInfo-detail" {...weatherDetailLink} >
 				<div className="index-container-localInfo-detail-each main">
 					<h2>所在城市 - </h2>
 					<h3 className="invalid-value">{(dataEmpty)? '未開啟定位': `${localInfo.town.cate.name} ${localInfo.town.name}`}</h3>
@@ -76,7 +77,7 @@ const LocationInfo = ({ localInfo }) => {
 				<div className="index-container-localInfo-detail-img">
 					<img {...imgAttr} alt="" />
 				</div>
-			</a>
+			</Link>
 		</div>
 	)
 }

@@ -76,8 +76,6 @@ class Home extends Component {
 												.find(resp => resp.types[0] === 'postal_code').address_components
 												.map(city => city.long_name);
 
-							console.log(cityNames)
-							console.log(cityAllList)
 							const townId = cityAllList
 											.filter(city => city.name === cityNames[2].substring(0, 2))
 											.map(city => city.towns.filter(town => town.postal === cityNames[0]))

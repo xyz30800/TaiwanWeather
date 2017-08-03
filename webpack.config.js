@@ -3,7 +3,7 @@ const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-const VENDER_LIBS = ['react', 'react-dom', 'axios', 'react-router', 'react-router-dom'];
+const VENDER_LIBS = ['react', 'react-dom', 'axios', 'react-router', 'react-router-dom', 'recharts'];
 
 module.exports = {
   entry: {

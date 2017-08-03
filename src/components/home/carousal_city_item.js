@@ -1,4 +1,5 @@
 import React, {Component}  from 'react';
+import { Link } from 'react-router-dom';
 
 const CarousalCityItem = ({carousal}) => {
 	
@@ -7,14 +8,15 @@ const CarousalCityItem = ({carousal}) => {
 	let dataEmpty = false;
 	if (carousal === undefined) {
 		dataEmpty = true;
+		weatherDetailLink = {'to': '/'}
 	} else {
 		dataEmpty = false;
 		imgAttr = {'src': `https://works.ioa.tw/weather/img/weathers/zeusdesign/${carousal.weather.img}`}
-		weatherDetailLink = {'href': `/result?town=${carousal.town.name}&city=${carousal.town.cate.name}`}
+		weatherDetailLink = {'to': `/result?town=${carousal.town.name}&city=${carousal.town.cate.name}`}
 	}
 	
 	return (
-		<a className="index-container-cityInfo-detail" {...weatherDetailLink}>
+		<Link className="index-container-cityInfo-detail" {...weatherDetailLink}>
 			<h2>{(dataEmpty)? '讀取中...': `${carousal.town.cate.name} ${carousal.town.name}`}</h2>
 			<div className="index-container-cityInfo-detail-each">
 				<span className="index-container-cityInfo-detail-each-title">天氣狀況</span>
@@ -36,7 +38,7 @@ const CarousalCityItem = ({carousal}) => {
 			<div className="index-container-cityInfo-detail-img">
 				<img { ...imgAttr} alt="" />
 			</div>
-		</a>
+		</Link>
 	)
 }
 

@@ -1,4 +1,5 @@
 import React, {Component}  from 'react';
+import { Link } from 'react-router-dom';
 
 import SearchBar from './layout/search_bar';
 
@@ -10,7 +11,7 @@ const Layout = ({children}) => {
 		<div className="content">
 			<div className="container public-container">
 				<div className="public-container-header">
-					<h1><a href="/">台灣地區天氣資訊</a></h1>
+					<h1><Link href="/">台灣地區天氣資訊</Link></h1>
 				</div>
 				<SearchBar />
 			</div>

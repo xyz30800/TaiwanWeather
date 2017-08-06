@@ -18,6 +18,7 @@ class Result extends Component {
 	}
 
 	componentDidMount() {
+		
 		const params = new URLSearchParams(this.props.location.search);
 		const paramsTown = params.get('town');
 		const paramsCity = params.get('city');
@@ -25,6 +26,10 @@ class Result extends Component {
 		if (paramsTown === null || paramsTown.length === 0 || paramsCity === null || paramsCity.length === 0 ) this.navigateIndex();
 
 		this.getResultData(paramsTown, paramsCity);
+		
+		// const { city, town } = this.props.match.params;
+
+		// this.getResultData(town, city);
 	}
 
 	getResultData(paramsTown, paramsCity) {

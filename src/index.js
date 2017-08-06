@@ -1,6 +1,6 @@
 import React, {Component}  from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter as Router, Route, Link, Switch, Redirect } from 'react-router-dom'
+import { BrowserRouter as Router, HashRouter, Route, Link, Switch, Redirect } from 'react-router-dom';
 
 import Result from './components/result';
 import Home from './components/home';
@@ -11,7 +11,7 @@ import './css/style';
 class App extends Component {
 	render(){
 		return (
-			<Router>
+			<HashRouter >
 				<Layout>
 					<Switch>
 						<Route exact path="/" component={Home} />
@@ -20,7 +20,7 @@ class App extends Component {
 	      				<Route component={Home}/>
 	      			</Switch>
 				</Layout>
-			</Router>
+			</HashRouter>
 		)
 	}
 }

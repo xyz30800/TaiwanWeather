@@ -1,4 +1,5 @@
 import React, {Component}  from 'react';
+import { Redirect } from 'react-router-dom';
 
 import cityAllList from '../../../files/city.list.tw.json';
 
@@ -9,11 +10,14 @@ class SearchBar extends Component {
 
 		this.state = {
 			cityAutoData: [],
+			fireRedirect: false,
+			town: '',
+			city: ''
 		}
 	}
 	componentWillMount() {
 		document.querySelector('body').addEventListener('click', () => {
-			const autocompleteEl = document.querySelector('.search-autocomplete').style['display'] = 'none';
+			document.querySelector('.search-autocomplete').style['display'] = 'none';
 		})
 	}
 	showAutocomplete(e) {
@@ -51,18 +55,31 @@ class SearchBar extends Component {
 		const {town, city} = e.target.dataset;
 		document.querySelector('.search-autocomplete').style['display'] = 'none';		
 		document.querySelector('[name="town"]').value = town;
-		document.querySelector('[name="city"]').value = city;
+		//document.querySelector('[name="city"]').value = city;
+		this.setState({town, city, fireRedirect: false})
+	}
+
+	formSubmit(e) {		
+		e.preventDefault()
+    	this.setState({ fireRedirect: true })
 	}
 
 	render() {
+		console.log(this.state.fireRedirect)
 		return (
 			<div className="public-container-search">
-				<form action="/result" method="get">
+				<form onSubmit={e => this.formSubmit(e)}>
 					<label htmlFor ="">輸入鄉市鎮: </label>
 					<input type="text" name="town" onKeyUp={e => this.showAutocomplete(e)} required />
 					<input type="hidden" name="city" />
 					<button type="submit">Search</button>
 				</form>
+				{
+					this.state.fireRedirect && <Redirect to={{
+						pathname: '/result',
+  						search: `?town=${this.state.town}&city=${this.state.city}`,
+					}}/>
+				}
 				<div className="search-autocomplete">
 					<ul>
 						{

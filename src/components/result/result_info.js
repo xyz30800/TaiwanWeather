@@ -34,7 +34,7 @@ const ResultInfo = ({result}) => {
 	return (
 		<div className="search-container-cityInfo">
 			<div className="search-container-cityInfo-header">
-				<h2>{(dataEmpty)? '讀取中...': `${result.town.name} ${result.town.cate.name}`}</h2>
+				<h2>{(dataEmpty)? 'loading...': `${result.town.name} ${result.town.cate.name}`}</h2>
 			</div>
 			<div className="search-container-cityInfo-content">
 				<div className="search-container-cityInfo-content-map">
@@ -43,33 +43,33 @@ const ResultInfo = ({result}) => {
 				<div className="search-container-cityInfo-content-weatherInfo">
 					<div className="search-container-cityInfo-content-weatherInfo-each">
 						<span>體感溫度</span>
-						<span>{(dataEmpty)? '讀取中...': result.weather.felt_air_temp} °C</span>
+						<span>{(dataEmpty)? 'loading...': result.weather.felt_air_temp} °C</span>
 					</div>
 					<div className="search-container-cityInfo-content-weatherInfo-each">
 						<span>濕度</span>
-						<span>{(dataEmpty)? '讀取中...': result.weather.humidity} %</span>
+						<span>{(dataEmpty)? 'loading...': result.weather.humidity} %</span>
 					</div>
 					<div className="search-container-cityInfo-content-weatherInfo-each">
 						<span>雨量</span>
-						<span>{(dataEmpty)? '讀取中...': result.weather.rainfall} mm</span>
+						<span>{(dataEmpty)? 'loading...': result.weather.rainfall} mm</span>
 					</div>
 					<div className="search-container-cityInfo-content-weatherInfo-each">
 						<span>日出時間</span>
-						<span>{(dataEmpty)? '讀取中...': result.weather.sunrise}</span>
+						<span>{(dataEmpty)? 'loading...': result.weather.sunrise}</span>
 					</div>
 					<div className="search-container-cityInfo-content-weatherInfo-each">
 						<span>日落時間</span>
-						<span>{(dataEmpty)? '讀取中...': result.weather.sunset}</span>
+						<span>{(dataEmpty)? 'loading...': result.weather.sunset}</span>
 					</div>
 					<div className="search-container-cityInfo-content-weatherInfo-each">
 						<span>天氣狀況</span>
-						<span>{(dataEmpty)? '讀取中...': result.weather.desc}</span>
+						<span>{(dataEmpty)? 'loading...': result.weather.desc}</span>
 					</div>
-					<p>Update Time: {(dataEmpty)? '讀取中...': result.weather.at}</p>
+					<p>Update Time: {(dataEmpty)? 'loading...': result.weather.at}</p>
 				</div>
 				<div className="search-container-cityInfo-content-condtion">
 					<img {...imgWeatherAttr} alt="" />
-					<span>{(dataEmpty)? '讀取中...': result.weather.temperature} °C</span>
+					<span>{(dataEmpty)? 'loading...': result.weather.temperature} °C</span>
 				</div>
 			</div>
 			{specialWarn}

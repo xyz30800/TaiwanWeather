@@ -65,7 +65,6 @@ class SearchBar extends Component {
 	}
 
 	render() {
-		console.log(this.state.fireRedirect)
 		return (
 			<div className="public-container-search">
 				<form onSubmit={e => this.formSubmit(e)}>

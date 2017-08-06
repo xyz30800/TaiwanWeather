@@ -10,14 +10,14 @@ class SearchBar extends Component {
 
 		this.state = {
 			cityAutoData: [],
-			searchSubmit: false,
-			townPara: '',
-			cityPara: ''
+			fireRedirect: false,
+			town: '',
+			city: ''
 		}
 	}
 	componentWillMount() {
 		document.querySelector('body').addEventListener('click', () => {
-			const autocompleteEl = document.querySelector('.search-autocomplete').style['display'] = 'none';
+			document.querySelector('.search-autocomplete').style['display'] = 'none';
 		})
 	}
 	showAutocomplete(e) {
@@ -53,47 +53,47 @@ class SearchBar extends Component {
 
 	selectText(e) {
 		const {town, city} = e.target.dataset;
-		document.querySelector('.search-autocomplete').style['display'] = 'none';
+		document.querySelector('.search-autocomplete').style['display'] = 'none';		
 		document.querySelector('[name="town"]').value = town;
-		// document.querySelector('[name="city"]').value = city;
-		this.setState({ townPara: town,  cityPara: city });
+		//document.querySelector('[name="city"]').value = city;
+		this.setState({town, city, fireRedirect: false})
 	}
 
-	submitForm(e) {
-		e.preventDefault();
-		this.setState({searchSubmit: true});
+	formSubmit(e) {		
+		e.preventDefault()
+    	this.setState({ fireRedirect: true })
 	}
 
 	render() {
+		console.log(this.state.fireRedirect)
 		return (
 			<div className="public-container-search">
-				{/*<form action="/result" method="get" onSubmit={e => this.submitForm(e)}>*/}
-				<form onSubmit={e => this.submitForm(e)}>
+				<form onSubmit={e => this.formSubmit(e)}>
 					<label htmlFor ="">輸入鄉市鎮: </label>
 					<input type="text" name="town" onKeyUp={e => this.showAutocomplete(e)} required />
 					<input type="hidden" name="city" />
 					<button type="submit">Search</button>
 				</form>
 				{
-					this.state.searchSubmit && <Redirect to={{
-													pathname: '/result',
-													search: `?town=${this.state.townPara}&city=${this.state.cityPara}`
-												}}/>
-		        }
+					this.state.fireRedirect && <Redirect to={{
+						pathname: '/result',
+  						search: `?town=${this.state.town}&city=${this.state.city}`,
+					}}/>
+				}
 				<div className="search-autocomplete">
 					<ul>
-					{
-						this.state.cityAutoData.map(city => {
-							return city.towns.map(town => {
-								return (
-									<li key={town.name} onClick={e => this.selectText(e)} data-town={town.name} data-city={city.city}>
-										<span className="town" data-town={town.name} data-city={city.city}>{town.name}</span> / 
-										<span className="city" data-town={town.name} data-city={city.city}>{city.city}</span>
-									</li>
-								)
+						{
+							this.state.cityAutoData.map(city => {
+								return city.towns.map(town => {
+									return (
+										<li key={town.name} onClick={e => this.selectText(e)} data-town={town.name} data-city={city.city}>
+											<span className="town" data-town={town.name} data-city={city.city}>{town.name}</span> / 
+											<span className="city" data-town={town.name} data-city={city.city}>{city.city}</span>
+										</li>
+									)
+								})
 							})
-						})
-					}
+						}
 					</ul>
 				</div>
 			</div>

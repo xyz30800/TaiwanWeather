@@ -16,13 +16,12 @@ const LocationInfo = ({ localInfo }) => {
 	
 	if (localDataLen === 0) { 
 		dataEmpty = true;
-		imgAttr = {'src': waringIng};
-		weatherDetailLink = {'to': ''};
+		imgAttr = {'src': waringIng}
+		weatherDetailLink = {'to': '/'};
 		lng_lat = {
 			'lng': NaN,
 			'lat': NaN
 		}
-		
 		if (showInvalids.length !== 0) {
 			showInvalids.map(el => {
 				el.style['color'] = '#FF5722';

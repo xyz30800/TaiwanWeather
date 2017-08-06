@@ -17,19 +17,23 @@ class Result extends Component {
 		}
 	}
 
-	componentDidMount() {
+	componentWillReceiveProps(nextProps) {
+		this.getParameter(nextProps)
+	}
+
+	componentWillMount() {
+		this.getParameter(this.props)
+	}
+
+	getParameter(props) {
 		
-		const params = new URLSearchParams(this.props.location.search);
+		const params = new URLSearchParams(props.location.search);
 		const paramsTown = params.get('town');
 		const paramsCity = params.get('city');
-
+		
 		if (paramsTown === null || paramsTown.length === 0 || paramsCity === null || paramsCity.length === 0 ) this.navigateIndex();
 
 		this.getResultData(paramsTown, paramsCity);
-		
-		// const { city, town } = this.props.match.params;
-
-		// this.getResultData(town, city);
 	}
 
 	getResultData(paramsTown, paramsCity) {
@@ -77,7 +81,6 @@ class Result extends Component {
 	}
 
 	render() {
-		
 		return (
 			<div className="container router-container">
 				<ResultInfo result={this.state.resp}/>

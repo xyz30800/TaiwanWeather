@@ -13,14 +13,31 @@ class Home extends Component {
 
 		this.state = {
 			localAllInfo: {},
-			carousalAllInfo: {}
+			carousalAllInfo: {},
+			geolocationSupport: true,
+			intervalId: 0
 		}
 	}
 
-	componentWillMount() {
-
+	componentDidMount() {
 		this.getCarousalCity(['1', '257']);
 		this.getUserCity();
+		this.randomCityId();
+	}
+
+	randomCityId() {	
+		const intervalId = setInterval(() => {
+
+			const cityIds = Array.apply(null, Array(2)).map((i) => parseInt(Math.random() * (368 - 1) + 1))
+			this.getCarousalCity(cityIds);
+			
+		}, 5000);
+
+		this.setState({ intervalId });
+	}
+
+	componentWillUnmount() {
+		clearInterval(this.state.intervalId);
 	}
 
 	getCarousalCity(cityIds) {
@@ -33,30 +50,29 @@ class Home extends Component {
 		.all([...carousalPormises])
 		.then(axios.spread((...carousalWeatherResp) => {
 
-				// Carousal city
-		  		const carousalTowns = carousalWeatherResp.map(city => preDealResp(city));
+			// Carousal city
+	  		const carousalTowns = carousalWeatherResp.map(city => preDealResp(city));
 
-				const promises = cityIds.map(id => axios.get(`https://json2jsonp.com/?url=https://works.ioa.tw/weather/api/weathers/${id}.json&callback=resp`))
+			const promises = cityIds.map(id => axios.get(`https://json2jsonp.com/?url=https://works.ioa.tw/weather/api/weathers/${id}.json&callback=resp`))
 
-				axios
-				.all(promises)
-				.then(promise => {
+			axios
+			.all(promises)
+			.then(promise => {
 
-					// 處理每一筆Promise資料
-				    const totalWeatherInfo = promise.map(resp => preDealResp(resp))
+				// 處理每一筆Promise資料
+			    const totalWeatherInfo = promise.map(resp => preDealResp(resp))
 
-					// 重新整理 Carousal city 資料輸出一個 Object
-					const carousalAllInfo = carousalTowns.map((city, index) => {
-						return {
-							'town': city,
-							'weather': totalWeatherInfo[index]
-						}
-					})
-					
-					this.setState({ carousalAllInfo });
-				});
-			})
-		);
+				// 重新整理 Carousal city 資料輸出一個 Object
+				const carousalAllInfo = carousalTowns.map((city, index) => {
+					return {
+						'town': city,
+						'weather': totalWeatherInfo[index]
+					}
+				})
+				
+				this.setState({ carousalAllInfo });
+			});
+		}));
 	}
 
 	getUserCity() {
@@ -93,8 +109,7 @@ class Home extends Component {
         	});
         // 不支援此 API
 	    } else {
-	        console.log("Geolocation is not supported by this browser.");
-	        this.fetchLocalData(null);
+	        this.setState({ geolocationSupport: false });
 	    }
 	}
 
@@ -127,7 +142,7 @@ class Home extends Component {
 	render() {
 		return (
 			<div className="container router-container">
-				<LocationCity localInfo={this.state.localAllInfo} />
+				<LocationCity localInfo={this.state.localAllInfo} support={this.state.geolocationSupport}/>
 				<CarousalCity carousalInfo={this.state.carousalAllInfo} />
 			</div>
 		)

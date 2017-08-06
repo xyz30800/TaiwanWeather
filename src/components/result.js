@@ -26,7 +26,6 @@ class Result extends Component {
 	}
 
 	getParameter(props) {
-		
 		const params = new URLSearchParams(props.location.search);
 		const paramsTown = params.get('town');
 		const paramsCity = params.get('city');

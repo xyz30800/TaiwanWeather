@@ -24,6 +24,10 @@ class LocationMap extends Component {
         	map: mapApi,
         });
 	}
+
+	shouldComponentUpdate(nextProps) {
+		return this.props.lat != nextProps.lat;
+	}
 	
 	componentDidUpdate(prevProps, prevState) {
 		if (this.state.loading) {

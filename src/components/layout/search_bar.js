@@ -55,12 +55,14 @@ class SearchBar extends Component {
 		const {town, city} = e.target.dataset;
 		document.querySelector('.search-autocomplete').style['display'] = 'none';		
 		document.querySelector('[name="town"]').value = town;
-		//document.querySelector('[name="city"]').value = city;
+
 		this.setState({town, city, fireRedirect: false})
 	}
 
 	formSubmit(e) {		
 		e.preventDefault()
+		document.querySelector('[name="town"]').value = '';
+
     	this.setState({ fireRedirect: true })
 	}
 
@@ -76,7 +78,7 @@ class SearchBar extends Component {
 				{
 					this.state.fireRedirect && <Redirect to={{
 						pathname: '/result',
-  						search: `?town=${this.state.town}&city=${this.state.city}`,
+  						search: `?town=${this.state.town}&city=${this.state.city}`
 					}}/>
 				}
 				<div className="search-autocomplete">

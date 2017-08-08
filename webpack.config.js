@@ -15,11 +15,19 @@ module.exports = {
     filename: '[name].[chunkhash].js'
   },
   resolve: {
-    extensions: ['*', '.js', '.jsx', '.scss', '.html']
+    extensions: ['*', '.js', '.jsx', '.scss', '.html', '.png'],
+    alias: {
+      components: path.resolve(__dirname, 'src/components'),
+      style: path.resolve(__dirname, 'src/css'),
+      images: path.resolve(__dirname, 'src/img'),
+      library: path.resolve(__dirname, 'src/library'),
+      files: path.resolve(__dirname, 'files')
+    }
   },
   devServer: {
     historyApiFallback: true,
   },
+  devtool: 'source-map',
   module: {
     rules: [
       {

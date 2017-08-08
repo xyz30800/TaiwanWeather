@@ -688,5 +688,22 @@ $color_4: #FF5722;
             }
         }
     }
+    .error-container {
+        @include centerVertHoriz();
+        flex-direction: column;
+        
+        > * {
+            box-shadow: none;
+            margin: 20px 0;
+        }
+
+        img {
+            width: 230px;
+        }
+        span {
+            color: rgba($color_3, 0.7);
+            font-size: 36px;
+        }
+    }
     /* router-container 內的元件 CSS - End*/
 }

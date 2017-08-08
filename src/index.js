@@ -1,14 +1,13 @@
 import React, {Component}  from 'react';
 import ReactDOM from 'react-dom';
+import { HashRouter, Route, Switch } from 'react-router-dom';
 
-import { BrowserRouter as Router, HashRouter, Route, Link, Switch, Redirect } from 'react-router-dom';
+import Home from 'components/home';
+import Result from 'components/result';
+import Layout from 'components/layout';
+import Error404 from 'components/error404';
 
-import Result from './components/result';
-import Home from './components/home';
-import Layout from './components/layout';
-//import Error404 from './components/error404';
-
-import './css/style';
+import 'style/style';
 
 class App extends Component {
 	render(){
@@ -17,8 +16,8 @@ class App extends Component {
   				<Layout>
   					<Switch>
   						<Route exact path="/" component={Home} />
-  						<Route exact path="/result" component={Result} />
-	      				<Route path="/:any" component={Home}/>
+  						<Route path="/result" component={Result} />
+	      				<Route path="/:any" component={Error404}/>
 	      				<Route component={Home}/>
   					</Switch>
   				</Layout>

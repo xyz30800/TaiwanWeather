@@ -1,7 +1,9 @@
 import React, {Component}  from 'react';
 import { Redirect } from 'react-router-dom';
 
-import cityAllList from '../../../files/city.list.tw.json';
+import Autocomplete from 'components/layout/autocomplete';
+
+import cityAllList from 'files/city.list.tw.json';
 
 class SearchBar extends Component {
 
@@ -81,22 +83,7 @@ class SearchBar extends Component {
   						search: `?town=${this.state.town}&city=${this.state.city}`
 					}}/>
 				}
-				<div className="search-autocomplete">
-					<ul>
-						{
-							this.state.cityAutoData.map(city => {
-								return city.towns.map(town => {
-									return (
-										<li key={town.name} onClick={e => this.selectText(e)} data-town={town.name} data-city={city.city}>
-											<span className="town" data-town={town.name} data-city={city.city}>{town.name}</span> / 
-											<span className="city" data-town={town.name} data-city={city.city}>{city.city}</span>
-										</li>
-									)
-								})
-							})
-						}
-					</ul>
-				</div>
+				<Autocomplete cityAutoData={this.state.cityAutoData}/>
 			</div>
 		)
 	}

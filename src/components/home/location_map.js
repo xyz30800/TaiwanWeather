@@ -14,7 +14,7 @@ class LocationMap extends Component {
 	}
 
 	callGoogleMap(location) {
-		const mapApi = new google.maps.Map(document.querySelector('#ss'), {
+		const mapApi = new google.maps.Map(document.querySelector('#mapEl'), {
 			zoom: 15,
 			center: location
 		});
@@ -46,7 +46,7 @@ class LocationMap extends Component {
 	render() {
 		let mapEle = {};
 		if (this.state.loading) {
-			mapEle = <div id="ss" ref="map" style={{height: '100%'}}/>;	
+			mapEle = <div id="mapEl" ref="map" style={{height: '100%'}}/>;	
 		} else {
 			mapEle = <div className="invalid-map">沒有地圖資料</div>;
 		}

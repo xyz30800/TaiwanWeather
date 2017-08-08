@@ -1,9 +1,9 @@
 import React, {Component}  from 'react';
 import { Link } from 'react-router-dom';
 
-import SearchBar from './layout/search_bar';
+import SearchBar from 'components/layout/search_bar';
 
-import cityAllList from '../../files/city.list.tw.json';
+import cityAllList from 'files/city.list.tw.json';
 
 const Layout = ({children}) => {
 	

@@ -1,10 +1,10 @@
 import React, {Component}  from 'react';
 import axios from 'axios';
 
-import LocationCity from './home/location_city';
-import CarousalCity from './home/carousel_city';
+import LocationCity from 'components/home/location_city';
+import CarousalCity from 'components/home/carousel_city';
 
-import cityAllList from '../../files/city.list.tw.json';
+import cityAllList from 'files/city.list.tw.json';
 
 class Home extends Component {
 
@@ -13,9 +13,11 @@ class Home extends Component {
 
 		this.state = {
 			localAllInfo: {},
+			position: {},
 			carousalAllInfo: {},
 			geolocationSupport: true,
-			intervalId: 0
+			locationError: false,
+			interValId: 0,
 		}
 	}
 
@@ -26,18 +28,19 @@ class Home extends Component {
 	}
 
 	randomCityId() {	
-		const intervalId = setInterval(() => {
+		const interValId = setInterval(() => {
 
 			const cityIds = Array.apply(null, Array(2)).map((i) => parseInt(Math.random() * (368 - 1) + 1))
 			this.getCarousalCity(cityIds);
 			
-		}, 5000);
+		}, 8000);
 
-		this.setState({ intervalId });
+		this.setState({ interValId });
 	}
 
 	componentWillUnmount() {
-		clearInterval(this.state.intervalId);
+		// 取消 setInterval
+		clearInterval(this.state.interValId);
 	}
 
 	getCarousalCity(cityIds) {
@@ -70,6 +73,9 @@ class Home extends Component {
 					}
 				})
 				
+				this.setState(() => {
+
+				})
 				this.setState({ carousalAllInfo });
 			});
 		}));
@@ -78,43 +84,48 @@ class Home extends Component {
 	getUserCity() {
 		if (navigator.geolocation) {
         	navigator.geolocation.getCurrentPosition((pos) => {
-        		const { latitude, longitude } = pos.coords;
-        		const position = { 'lat': parseFloat(latitude.toFixed(3)), 'lng': parseFloat(longitude.toFixed(3)) }
+        		const latitude = parseFloat(pos.coords.latitude.toFixed(3));
+        		const longitude = parseFloat(pos.coords.longitude.toFixed(3));
+
+        		const position = { 'lat': latitude, 'lng': longitude }
  	
  				var geocoder = new google.maps.Geocoder();
- 				var coord = new google.maps.LatLng(parseFloat(latitude.toFixed(3)), parseFloat(longitude.toFixed(3)));
+ 				var coord = new google.maps.LatLng(latitude, longitude );
  				
  				geocoder.geocode({'latLng': coord }, (results, status) => {
 					if (status === google.maps.GeocoderStatus.OK) {
-						// 如果有資料就會回傳
-						if (results) {
-							const cityNames = results // ["106", "大安區", "台北市", "台灣"]
-												.find(resp => resp.types[0] === 'postal_code').address_components
-												.map(city => city.long_name);
 
-							const townId = cityAllList
-											.filter(city => city.name === cityNames[2].substring(0, 2))
-											.map(city => city.towns.filter(town => town.postal === cityNames[0]))
-											.filter(city => city.length !== 0)[0][0].id;
+						// 如果有資料就會回傳
+						if (results.length !== 1) {
+							const cityNames = 
+								results // ["106", "大安區", "台北市", "台灣"]
+								.find(resp => resp.types[0] === 'postal_code').address_components
+								.map(city => city.long_name);
+
+							const townId = 
+								cityAllList
+								.filter(city => city.name === cityNames[2].substring(0, 2))
+								.map(city => city.towns.filter(town => town.postal === cityNames[0]))
+								.filter(city => city.length !== 0)[0][0].id;
 											
-							this.fetchLocalData(townId);
+							this.fetchLocalData(townId, position);
+						} else {
+							this.setState({ locationError: true });
 						}
 					}
-					// 經緯度資訊錯誤
+					// 經緯度資訊錯誤: locationError
 					else {
-						console.log("Reverse Geocoding failed because: " + status);
-						this.fetchLocalData(null);
+						this.setState({ locationError: true });
 					}
 				});
         	});
-        // 不支援此 API
+        // 不支援此 API: geolocationSupport
 	    } else {
 	        this.setState({ geolocationSupport: false });
 	    }
 	}
 
-	fetchLocalData(townId) {
-		if (townId === null) return;
+	fetchLocalData(townId, position) {
 
 		const preDealResp = (resp) => JSON.parse(resp.data.match(/\((.*)\)/)[1]);
 
@@ -132,18 +143,30 @@ class Home extends Component {
 			    localAllInfo['town'] = localTownInfo;
 				localAllInfo['weather'] = preDealResp(resp);
 				
-				this.setState({ localAllInfo });
+				this.setState({ localAllInfo, position });
 			})
-			.catch(error => console.log(error));
+			.catch(error => console.log(error, '123'));
 		})
-		.catch(error => console.log(error));
+		.catch(error => console.log(error, '123'));
 	}
 
 	render() {
+
+		const locationCityAttr = {
+			localInfo: this.state.localAllInfo,
+			support: this.state.geolocationSupport,
+			locationError: this.state.locationError,
+			position: this.state.position
+		};
+
+		const carousalCityAttr = {
+			carousalInfo: this.state.carousalAllInfo
+		}
+
 		return (
 			<div className="container router-container">
-				<LocationCity localInfo={this.state.localAllInfo} support={this.state.geolocationSupport}/>
-				<CarousalCity carousalInfo={this.state.carousalAllInfo} />
+				<LocationCity {...locationCityAttr} />
+				<CarousalCity {...carousalCityAttr} />
 			</div>
 		)
 	}

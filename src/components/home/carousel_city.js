@@ -1,6 +1,6 @@
 import React, {Component}  from 'react';
 
-import CarousalCityItem from './carousal_city_item';
+import CarousalCityItem from 'components/home/carousal_city_item';
 
 const CarousalCity = ({carousalInfo}) => {
 	

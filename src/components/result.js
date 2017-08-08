@@ -1,10 +1,10 @@
 import React, {Component}  from 'react';
 import axios from 'axios';
 
-import ResultInfo from './result/result_info';
-import ResultBar from './result/result_bar';
+import ResultInfo from 'components/result/result_info';
+import ResultBar from 'components/result/result_bar';
 
-import cityAllList from '../../files/city.list.tw.json';
+import cityAllList from 'files/city.list.tw.json';
 
 class Result extends Component {
 
@@ -52,14 +52,15 @@ class Result extends Component {
 		const getTown =  axios.get(`https://json2jsonp.com/?url=https://works.ioa.tw/weather/api/towns/${townId}.json&callback=resp`);
 
 		const resp = {};
+		const histories = {};
 		axios
 		.all([getWeather, getTown])
 		.then(axios.spread((weather, town) => {
 
 			const respWeather = preDealResp(weather);
 			const respTown = preDealResp(town);
-
-			const histories = respWeather.histories.map(record => {
+			
+			const respHistories = respWeather.histories.map(record => {
 				return {
 					time: record.at.split(' ')[1].substring(0, 5),
 					humidity: record.humidity,
@@ -67,7 +68,10 @@ class Result extends Component {
 					temperature: record.temperature,
 				}
 			});
-
+			
+			histories['weather'] = respHistories;
+			histories['town'] = respTown.name;
+				
 			resp['weather'] = respWeather;
 			resp['town'] = respTown;
 			

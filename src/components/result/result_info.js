@@ -1,25 +1,31 @@
 import React, {Component}  from 'react';
 
-import waringImg from '../../img/waring.png';
-import loading from '../../img/loading.png';
+import waringImg from 'images/waring';
+import loading from 'images/loading';
 
 const ResultInfo = ({result}) => {
-
+	
 	const resultDataLen = Object.keys(result).length;
+	const errorText = '讀取中...';
 	let dataEmpty = false;
 	let imgWeatherAttr = {};
 	let imgTownAttr = {};
 	let specialWarn = '';
-	let errorText = '讀取中...';
+
 	if (resultDataLen === 0) {
 		dataEmpty = true;
 		imgTownAttr = {'src': loading};
 		imgWeatherAttr = {'src': waringImg};
-		errorText = '讀取中...';
 	} else {
 		dataEmpty = false;
-		imgTownAttr = {'src': result.town.img};
-		imgWeatherAttr = {'src': `https://works.ioa.tw/weather/img/weathers/zeusdesign/${result.weather.img}`}
+		imgTownAttr = {
+			'src': result.town.img,
+			'alt': `${result.town.cate.name} ${result.town.name}`
+		};
+		imgWeatherAttr = {
+			'src': `https://works.ioa.tw/weather/img/weathers/zeusdesign/${result.weather.img}`,
+			'alt': result.weather.desc
+		}
 
 		if (result.weather.specials.length !== 0) {
 			const specialdata = result.weather.specials[0];
@@ -40,7 +46,7 @@ const ResultInfo = ({result}) => {
 			</div>
 			<div className="search-container-cityInfo-content">
 				<div className="search-container-cityInfo-content-map">
-					<img {...imgTownAttr} alt="" />
+					<img {...imgTownAttr} />
 				</div>
 				<div className="search-container-cityInfo-content-weatherInfo">
 					<div className="search-container-cityInfo-content-weatherInfo-each">
@@ -70,7 +76,7 @@ const ResultInfo = ({result}) => {
 					<p>Update Time: {(dataEmpty)? errorText: result.weather.at}</p>
 				</div>
 				<div className="search-container-cityInfo-content-condtion">
-					<img {...imgWeatherAttr} alt="" />
+					<img {...imgWeatherAttr} />
 					<span>{(dataEmpty)? errorText: result.weather.temperature} °C</span>
 				</div>
 			</div>

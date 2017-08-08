@@ -1,20 +1,22 @@
 import React, {Component}  from 'react';
 import { Link } from 'react-router-dom';
 
-import waringIng from '../../img/waring.png';
+import waringIng from 'images/waring';
 
-import LocationMap from './location_map';
+import CheckData from '../../library/test';
 
-const LocationInfo = ({ localInfo, support }) => {
+import LocationMap from 'components/home/location_map';
+
+const LocationInfo = ({ localInfo, support, locationError, position }) => {
 	
+	//console.log(CheckData())
 	const localDataLen = Object.keys(localInfo).length;
+	const showInvalidEls = Array.apply(null, document.querySelectorAll('.invalid-value')); // 變為真正的 Array
+
 	let dataEmpty = false;
 	let imgAttr = {};
 	let weatherDetailLink = {};
 	let lng_lat = {};
-	let errorText = '';
-	
-	const showInvalids = Array.apply(null, document.querySelectorAll('.invalid-value')); // 變為真正的 Array
 	
 	if (localDataLen === 0) { 
 		dataEmpty = true;
@@ -24,34 +26,37 @@ const LocationInfo = ({ localInfo, support }) => {
 			'lng': NaN,
 			'lat': NaN
 		}
-		if (showInvalids.length !== 0) {
-			showInvalids.map(el => {
+		if (showInvalidEls.length !== 0) {
+			showInvalidEls.map(el => {
 				el.style['color'] = '#FF5722';
 				el.style['font-style'] = 'italic';
 			})
 		}
 
-		if (!support) {
-			errorText = '定位API不支援';
-		} else {
-			errorText = '未開啟定位';
-		}
-
 	} else {
 		dataEmpty = false;
-		imgAttr = {'src': `https://works.ioa.tw/weather/img/weathers/zeusdesign/${localInfo.weather.img}`};
-		weatherDetailLink = {'to': `/result?town=${localInfo.town.name}&city=${localInfo.town.cate.name}`};
-		lng_lat = {
-			'lng': parseFloat(localInfo.town.position.lng),
-			'lat': parseFloat(localInfo.town.position.lat)
+		imgAttr = {
+			'src': `https://works.ioa.tw/weather/img/weathers/zeusdesign/${localInfo.weather.img}`,
+			'alt': localInfo.weather.desc
 		};
+		weatherDetailLink = {'to': `/result?town=${localInfo.town.name}&city=${localInfo.town.cate.name}`};
+		lng_lat = position;
 
-		if (showInvalids.length !== 0) {
-			showInvalids.map(el => {
+		if (showInvalidEls.length !== 0) {
+			showInvalidEls.map(el => {
 				el.style['color'] = null;
 				el.style['font-style'] = null;
 			})
 		}
+	}
+
+	let errorText = '';
+	if (!support) {
+		errorText = '定位API不支援';
+	} else if (locationError) {
+		errorText = '經緯度發生錯誤';
+	} else {
+		errorText = '未開啟定位';
 	}
 	
 	return (
@@ -82,7 +87,7 @@ const LocationInfo = ({ localInfo, support }) => {
 				</div>
 				<span className="index-container-localInfo-detail-uptime">Update Time: {(dataEmpty)? errorText: localInfo.weather.at}</span>
 				<div className="index-container-localInfo-detail-img">
-					<img {...imgAttr} alt="" />
+					<img {...imgAttr} />
 				</div>
 			</Link>
 		</div>

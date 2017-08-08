@@ -2,18 +2,21 @@ import React, {Component}  from 'react';
 import { Link } from 'react-router-dom';
 
 const CarousalCityItem = ({carousal}) => {
-	
+
+	const errorText = '讀取中...';
 	let imgAttr = {};
 	let weatherDetailLink = {};
 	let dataEmpty = false;
-	let errorText = '';
+
 	if (carousal === undefined) {
 		dataEmpty = true;
 		weatherDetailLink = {'to': '/'}
-		errorText = '讀取中...';
 	} else {
 		dataEmpty = false;
-		imgAttr = {'src': `https://works.ioa.tw/weather/img/weathers/zeusdesign/${carousal.weather.img}`}
+		imgAttr = {
+			'src': `https://works.ioa.tw/weather/img/weathers/zeusdesign/${carousal.weather.img}`,
+			'alt': carousal.weather.desc
+		}
 		weatherDetailLink = {'to': `/result?town=${carousal.town.name}&city=${carousal.town.cate.name}`}
 	}
 	
@@ -38,7 +41,7 @@ const CarousalCityItem = ({carousal}) => {
 			</div>
 			<span className="index-container-cityInfo-detail-uptime">Update Time: {(dataEmpty)? 'loading': carousal.weather.at}</span>
 			<div className="index-container-cityInfo-detail-img">
-				<img { ...imgAttr} alt="" />
+				<img {...imgAttr} />
 			</div>
 		</Link>
 	)

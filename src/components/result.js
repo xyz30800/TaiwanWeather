@@ -32,7 +32,6 @@ class Result extends Component {
 		const params = new URLSearchParams(props.location.search);
 		const paramsTown = params.get('town');
 		const paramsCity = params.get('city');
-		console.log(paramsTown, paramsCity)
 
 		if (paramsCity === null || paramsTown === null || paramsTown.length === 0 || paramsCity.length === 0 ) {
 			this.setState({ errorSearch: true, errorMsg: '404' });

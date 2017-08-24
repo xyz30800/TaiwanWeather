@@ -162,8 +162,11 @@ $color_4: #FF5722;
                             font-size: .9em;
                             font-style: italic;
                         }
-
-                        &:hover {
+                        
+                        // &:hover {
+                        //     background-color: rgba($color_3, 1);
+                        // }
+                        &.active {
                             background-color: rgba($color_3, 1);
                         }
                     }
@@ -330,7 +333,11 @@ $color_4: #FF5722;
         }
         &-cityInfo {
             @include centerVertHoriz();
-            @include clearfix();
+            h2 {
+                color: rgba($color_3, 0.8);
+                font-size: 24px;
+                padding: 8px;
+            }
             &-detail {
                 display: flex;
                 flex-direction: column;

@@ -1,20 +1,18 @@
-import React  from 'react';
+import React, {Component} from 'react';
 
-const Autocomplete = ({cityAutoData}) => {
-
+const Autocomplete = ({cityAutoData, selectTextCB, onMouseOverCB}) => {
+	
 	return (
-		<div className="search-autocomplete">
+		<div className="search-autocomplete" id="autocomplete">
 			<ul>
 			{
-				cityAutoData.map(city => {
-					return city.towns.map(town => {
-						return (
-							<li key={town.name} onClick={e => this.selectText(e)} data-town={town.name} data-city={city.city}>
-								<span className="town" data-town={town.name} data-city={city.city}>{town.name}</span> / 
-								<span className="city" data-town={town.name} data-city={city.city}>{city.city}</span>
-							</li>
-						)
-					})
+				cityAutoData.map((item) => {
+					return (
+						<li key={`${item.city}-${item.town}`} onClick={selectTextCB} data-town={item.town} data-city={item.city} onMouseOver={onMouseOverCB} >
+							<span className="town">{item.town}</span> / 
+							<span className="city">{item.city}</span>
+						</li>
+					)
 				})
 			}
 			</ul>

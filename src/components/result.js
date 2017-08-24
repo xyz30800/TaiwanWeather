@@ -1,5 +1,6 @@
 import React, {Component}  from 'react';
 import axios from 'axios';
+import { Redirect } from 'react-router-dom';
 
 import ResultInfo from 'components/result/result_info';
 import ResultBar from 'components/result/result_bar';
@@ -13,46 +14,56 @@ class Result extends Component {
 		
 		this.state = {
 			resp: {},
-			histories: {}
+			histories: {},
+			errorSearch: false,
+			errorMsg: ''
 		}
 	}
 
 	componentWillReceiveProps(nextProps) {
-		this.getParameter(nextProps)
+		this.getParameter(nextProps);
 	}
 
 	componentWillMount() {
-		this.getParameter(this.props)
+		this.getParameter(this.props);
 	}
 
 	getParameter(props) {
 		const params = new URLSearchParams(props.location.search);
 		const paramsTown = params.get('town');
 		const paramsCity = params.get('city');
-		
-		if (paramsTown === null || paramsTown.length === 0 || paramsCity === null || paramsCity.length === 0 ) this.navigateIndex();
+		console.log(paramsTown, paramsCity)
+
+		if (paramsCity === null || paramsTown === null || paramsTown.length === 0 || paramsCity.length === 0 ) {
+			this.setState({ errorSearch: true, errorMsg: '404' });
+			return;
+		}
 
 		this.getResultData(paramsTown, paramsCity);
 	}
 
 	getResultData(paramsTown, paramsCity) {
 
-		const result = {};
 		const preDealResp = (resp) => JSON.parse(resp.data.match(/\((.*)\)/)[1]);
 
 		const townId = 
 			cityAllList
 			.filter(cities => cities.name === paramsCity)
 			.map(city => city.towns.filter(town => town.name === paramsTown))
+			.filter(city => city.length !== 0)
 			.map(city => parseInt(city[0].id))[0]
 
-		if (townId === undefined) this.navigateIndex();
+		if (townId === undefined) {
+			this.setState({ errorSearch: true, errorMsg: '404' });
+			return;
+		}
 		
 		const getWeather = axios.get(`https://json2jsonp.com/?url=https://works.ioa.tw/weather/api/weathers/${townId}.json&callback=resp`);
 		const getTown =  axios.get(`https://json2jsonp.com/?url=https://works.ioa.tw/weather/api/towns/${townId}.json&callback=resp`);
 
 		const resp = {};
 		const histories = {};
+		
 		axios
 		.all([getWeather, getTown])
 		.then(axios.spread((weather, town) => {
@@ -79,13 +90,11 @@ class Result extends Component {
 		}));
 	}
 
-	navigateIndex() {
-		window.location.href = '/';
-	}
-
 	render() {
+		
 		return (
 			<div className="container router-container">
+				{ this.state.errorSearch && <Redirect to={`/error/${this.state.errorMsg}`} /> }
 				<ResultInfo result={this.state.resp}/>
 				<ResultBar histories={this.state.histories} />
 			</div>

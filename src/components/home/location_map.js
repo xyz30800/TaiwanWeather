@@ -30,27 +30,15 @@ class LocationMap extends Component {
 	}
 	
 	componentDidUpdate(prevProps, prevState) {
-		if (this.state.loading) {
-			this.callGoogleMap(this.state.location)
-		}
+		this.state.loading && this.callGoogleMap(this.state.location);
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (isNaN(nextProps.lat)) {
-			this.setState({ location: nextProps, loading: false });
-		} else {
-			this.setState({ location: nextProps, loading: true });
-		}
+		isNaN(nextProps.lat) ? this.setState({ location: nextProps, loading: false }) : this.setState({ location: nextProps, loading: true });
 	}
 
 	render() {
-		let mapEle = {};
-		if (this.state.loading) {
-			mapEle = <div id="mapEl" ref="map" style={{height: '100%'}}/>;	
-		} else {
-			mapEle = <div className="invalid-map">沒有地圖資料</div>;
-		}
-		return mapEle;
+		return (this.state.loading) ? <div id="mapEl" ref="map" style={{height: '100%'}}/> : <div className="invalid-map">沒有地圖資料</div>;
 	}
 }
 

@@ -15,19 +15,19 @@ class Home extends Component {
 			localAllInfo: {},
 			position: {},
 			carousalAllInfo: {},
-			geolocationSupport: true,
-			locationError: false,
+			locationError: '',
 			interValId: 0,
 		}
 	}
 
 	componentDidMount() {
-		this.getCarousalCity(['1', '257']);
 		this.getUserCity();
 		this.randomCityId();
 	}
 
 	randomCityId() {	
+		this.getCarousalCity(['1', '257']);
+
 		const interValId = setInterval(() => {
 
 			const cityIds = Array.apply(null, Array(2)).map((i) => parseInt(Math.random() * (368 - 1) + 1))
@@ -73,9 +73,6 @@ class Home extends Component {
 					}
 				})
 				
-				this.setState(() => {
-
-				})
 				this.setState({ carousalAllInfo });
 			});
 		}));
@@ -84,17 +81,17 @@ class Home extends Component {
 	getUserCity() {
 		if (navigator.geolocation) {
         	navigator.geolocation.getCurrentPosition((pos) => {
+
         		const latitude = parseFloat(pos.coords.latitude.toFixed(3));
         		const longitude = parseFloat(pos.coords.longitude.toFixed(3));
 
         		const position = { 'lat': latitude, 'lng': longitude }
  	
- 				var geocoder = new google.maps.Geocoder();
- 				var coord = new google.maps.LatLng(latitude, longitude );
+ 				const geocoder = new google.maps.Geocoder();
+ 				const coord = new google.maps.LatLng(latitude, longitude);
  				
  				geocoder.geocode({'latLng': coord }, (results, status) => {
 					if (status === google.maps.GeocoderStatus.OK) {
-
 						// 如果有資料就會回傳
 						if (results.length !== 1) {
 							const cityNames = 
@@ -107,21 +104,21 @@ class Home extends Component {
 								.filter(city => city.name === cityNames[2].substring(0, 2))
 								.map(city => city.towns.filter(town => town.postal === cityNames[0]))
 								.filter(city => city.length !== 0)[0][0].id;
-											
+
 							this.fetchLocalData(townId, position);
 						} else {
-							this.setState({ locationError: true });
+							this.setState({ locationError: 'errorInfo' });
 						}
 					}
 					// 經緯度資訊錯誤: locationError
 					else {
-						this.setState({ locationError: true });
+						this.setState({ locationError: 'errorInfo' });
 					}
 				});
         	});
-        // 不支援此 API: geolocationSupport
+        // 不支援此 API: geolocationSupportError
 	    } else {
-	        this.setState({ geolocationSupport: false });
+	        this.setState({ locationError: 'errorSupport' });
 	    }
 	}
 
@@ -145,16 +142,15 @@ class Home extends Component {
 				
 				this.setState({ localAllInfo, position });
 			})
-			.catch(error => console.log(error, '123'));
+			.catch(error => console.log(error));
 		})
-		.catch(error => console.log(error, '123'));
+		.catch(error => console.log(error));
 	}
 
 	render() {
 
 		const locationCityAttr = {
 			localInfo: this.state.localAllInfo,
-			support: this.state.geolocationSupport,
 			locationError: this.state.locationError,
 			position: this.state.position
 		};

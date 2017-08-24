@@ -3,15 +3,13 @@ import { Link } from 'react-router-dom';
 
 import waringIng from 'images/waring';
 
-import CheckData from '../../library/test';
-
 import LocationMap from 'components/home/location_map';
 
-const LocationInfo = ({ localInfo, support, locationError, position }) => {
-	
-	//console.log(CheckData())
+const LocationInfo = ({ localInfo, locationError, position }) => {
+
 	const localDataLen = Object.keys(localInfo).length;
-	const showInvalidEls = Array.apply(null, document.querySelectorAll('.invalid-value')); // 變為真正的 Array
+	// 變為真正的 Array
+	const showInvalidEls = Array.apply(null, document.querySelectorAll('.invalid-value'));
 
 	let dataEmpty = false;
 	let imgAttr = {};
@@ -50,14 +48,18 @@ const LocationInfo = ({ localInfo, support, locationError, position }) => {
 		}
 	}
 
-	let errorText = '';
-	if (!support) {
-		errorText = '定位API不支援';
-	} else if (locationError) {
-		errorText = '經緯度發生錯誤';
-	} else {
-		errorText = '未開啟定位';
+	const errorMsg = (type) => {
+
+		const text = {
+			errorSupport: () => '定位API不支援',
+			errorInfo: () => '經緯度發生錯誤',
+			other: () => '未開啟定位'
+		}
+		
+		return (text[type] || text['other'])();
 	}
+
+	const errorText = errorMsg(locationError);
 	
 	return (
 		<div className="index-container-localInfo" >
@@ -83,7 +85,7 @@ const LocationInfo = ({ localInfo, support, locationError, position }) => {
 				</div>
 				<div className="index-container-localInfo-detail-each">
 					<span className="index-container-localInfo-detail-each-title">雨量</span>
-					<span className="index-container-localInfo-detail-each-value invalid-value">{(dataEmpty)? errorText: `${localInfo.weather.rainfall}`}</span>
+					<span className="index-container-localInfo-detail-each-value invalid-value">{(dataEmpty)? errorText: `${localInfo.weather.rainfall} mm`}</span>
 				</div>
 				<span className="index-container-localInfo-detail-uptime">Update Time: {(dataEmpty)? errorText: localInfo.weather.at}</span>
 				<div className="index-container-localInfo-detail-img">

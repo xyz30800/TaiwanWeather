@@ -1,7 +1,8 @@
-import React, {Component}  from 'react';
+import React from 'react';
 import notFound from 'images/error-404.png';
 
-const Error404 = () => {
+const Error404 = ({match}) => {
+
 	return (
 		<div className="error-container router-container">
 			<img src={notFound} />

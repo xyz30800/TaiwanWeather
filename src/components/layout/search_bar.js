@@ -145,7 +145,7 @@ class SearchBar extends Component {
 	render() {
 		return (
 			<div className="public-container-search">
-				<form onSubmit={e => this.formSubmit(e)} autocomplete="off">
+				<form onSubmit={e => this.formSubmit(e)} autoComplete="off">
 					<label htmlFor ="">輸入鄉市鎮: </label>
 					<input type="text" name="town" onChange={e => this.showAutocomplete(e)} onKeyDown={e => this.onKeyDown(e)} value={this.state.town} required />
 					<input type="hidden" name="city" />

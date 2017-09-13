@@ -13,6 +13,9 @@ TaiwanWeather 供使用者查詢台灣各地的天氣狀況 (溫度、濕度及�
 * 有使用 HTML5 的 Geolocation，定位出使用者的位置。
 * 自己手動刻出 AutoComplete，使用者輸入鄉鎮相關字，及會跳出與關鍵字相關的鄉鎮。
 
+
+
+
 TaiwanWeather 資料來源: https://works.ioa.tw/weather/api/doc/index.html 。
 
 感謝 OA Wu 提供天氣的 API 讓我可以練習資料串接。

@@ -4,7 +4,11 @@ import axios from 'axios';
 import LocationCity from 'components/home/location_city';
 import CarousalCity from 'components/home/carousel_city';
 
-import cityAllList from 'files/city.list.tw.json';
+import cityAllList from 'json/city.list.tw.json';
+
+// Home.propTypes = {
+	
+// };
 
 class Home extends Component {
 

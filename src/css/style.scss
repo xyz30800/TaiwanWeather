@@ -26,7 +26,7 @@ $color_4: #FF5722;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    @include bgImgCover('../img/main_bg.jpg', center);
+    @include bgImgCover('../files/img/main_bg.jpg', center);
 
     &:after {
         position: absolute;
@@ -129,7 +129,7 @@ $color_4: #FF5722;
                 }
             }
             .search-autocomplete {
-                display: none;
+                display: inline-block;
                 position: absolute;
                 max-height: 180px;
                 overflow-y: overlay;

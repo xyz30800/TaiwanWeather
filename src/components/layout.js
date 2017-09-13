@@ -3,8 +3,6 @@ import { Link } from 'react-router-dom';
 
 import SearchBar from 'components/layout/search_bar';
 
-import cityAllList from 'files/city.list.tw.json';
-
 const Layout = ({children}) => {
 	
 	return (

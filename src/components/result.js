@@ -5,7 +5,7 @@ import { Redirect } from 'react-router-dom';
 import ResultInfo from 'components/result/result_info';
 import ResultBar from 'components/result/result_bar';
 
-import cityAllList from 'files/city.list.tw.json';
+import cityAllList from 'json/city.list.tw.json';
 
 class Result extends Component {
 

@@ -6,9 +6,8 @@ import Home from 'components/home';
 import Result from 'components/result';
 import Layout from 'components/layout';
 import Error404 from 'components/error/error404';
-import ErrorResult from 'components/error/ErrorResult';
 
-import 'style/style';
+import 'css/style';
 
 class App extends Component {
 	render(){

@@ -15,13 +15,12 @@ module.exports = {
     filename: '[name].[chunkhash].js'
   },
   resolve: {
-    extensions: ['*', '.js', '.jsx', '.scss', '.html', '.png'],
+    extensions: ['*', '.js', '.jsx', '.scss', '.html', '.png', 'json'],
     alias: {
       components: path.resolve(__dirname, 'src/components'),
-      style: path.resolve(__dirname, 'src/css'),
-      images: path.resolve(__dirname, 'src/img'),
-      library: path.resolve(__dirname, 'src/library'),
-      files: path.resolve(__dirname, 'files')
+      css: path.resolve(__dirname, 'src/css'),
+      json: path.resolve(__dirname, 'src/files/json'),
+      images: path.resolve(__dirname, 'src/files/img')
     }
   },
   devServer: {
@@ -75,10 +74,12 @@ module.exports = {
     }),
     new HtmlWebpackPlugin({
       template: 'src/index.html',
-      favicon: 'src/img/web-icon.png', // Add Web Icon
+      favicon: 'src/files/img/web-icon.png', // Add Web Icon
     }),
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+      'process.env': {
+        'NODE_ENV': JSON.stringify('production')
+       }
     })
   ]
 };

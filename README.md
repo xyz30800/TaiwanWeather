@@ -16,4 +16,5 @@ TaiwanWeather 供使用者查詢台灣各地的天氣狀況 (溫度、濕度及�
 TaiwanWeather 資料來源: https://works.ioa.tw/weather/api/doc/index.html 。
 
 感謝 OA Wu 提供天氣的 API 讓我可以練習資料串接。
+
 切版經驗也是由 OA Wu 的 Live Coding，讓我學習到不少的技巧與觀念。
